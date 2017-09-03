@@ -1,0 +1,52 @@
+.App {
+  text-align: center;
+}
+
+.slot-box{
+  display: inline-block;
+  width: 20%;
+  height: 300px;
+  float: left;
+  text-align: center;;
+  margin: 20px;
+}
+.slot{
+  position: relative;
+  width: 100%;
+  height: 300px;
+  border: 1px solid gray;
+
+  float: left;
+}
+
+.slot > .card{
+  float: left;
+}
+.card{
+  margin: 5px;
+  width: 50px;
+  height: 60px;
+  border: 1px solid #617083;
+}
+
+.card .cardType{
+  font-size: 9px;
+}
+
+.card .cardValue{
+  font-size: 12px;
+}
+
+.deck{
+  width: 100%;
+  border: 1px solid blue;
+  overflow: auto;
+}
+
+.deck > .card{
+  float: left;
+}
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
