@@ -14,13 +14,13 @@ class App extends Component {
     this.state = {
       uid: null,
       usedCards : {},
-
       availableCards : []
     }
 
     this.moveCard = this.moveCard.bind(this);
     this.resetGame = this.resetGame.bind(this);
     this.logout = this.logout.bind(this);
+    this.renderGameStatus = this.renderGameStatus.bind(this);
   }
 
   componentWillUnmount(){
@@ -82,7 +82,6 @@ class App extends Component {
   }
 
 
-
   moveCard(card){
     const usedCards = this.state.usedCards;
     const availableCards = this.state.availableCards;
@@ -129,11 +128,14 @@ class App extends Component {
         console.log('logout - ', this, 'event - ', event);
         this.context.router.transitionTo("/");
     }
- 
-  render() {
+  renderGameStatus(){
+    this.state.availableCards <= 50 ? 'Game Finished' : '';
+  }
 
+  render() {
     return (
       <div className="App">
+        <span className="game-status">{this.state.availableCards.length  === 0 ? 'Congratulations! Restart the game to play again!' : ''}</span>
         <Toolbar resetGame={this.resetGame} logout={this.logout} />
         <Deck availableCards={this.state.availableCards} />
         <SlotContainer usedCards = {this.state.usedCards} moveCard={this.moveCard}/>

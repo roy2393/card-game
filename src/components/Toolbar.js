@@ -5,7 +5,7 @@ export default class Toolbar extends Component {
     return (
     	<div className="toolbar">
     		 <button onClick={this.props.logout}>Logout</button>
-    		 <button onClick={this.props.resetGame}>Reset</button>
+    		 <button onClick={this.props.resetGame}>Restart</button>
     	</div>
     	);
   }
