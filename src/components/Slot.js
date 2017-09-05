@@ -30,7 +30,9 @@ class Slot extends Component {
 	}
 
 	renderCards(card){
-		return <Card key={card.type+card.value} type={card.type} value={card.value}/>
+    if(card.value >= 0){
+		  return <Card key={card.type+card.value} type={card.type} value={card.value}/>
+    }
 	}
 
   render() {
