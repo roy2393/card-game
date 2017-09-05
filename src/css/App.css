@@ -2,6 +2,22 @@
   text-align: center;
 }
 
+.slot-container{
+  display: flex;
+}
+
+#spade.slot-box{
+  order: 1;
+}
+#club.slot-box{
+  order: 2;
+}
+#heart.slot-box{
+  order: 3;
+}
+#diamond.slot-box{
+  order: 4;
+}
 .slot-box{
   display: inline-block;
   width: 20%;

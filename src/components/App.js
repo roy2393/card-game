@@ -13,12 +13,7 @@ class App extends Component {
     super();
     this.state = {
       uid: null,
-      usedCards : {
-                        spade : [-1],
-                        diamond : [-1],
-                        club : [-1],
-                        heart : [-1]
-                      },
+      usedCards : {},
 
       availableCards : []
     }
@@ -26,79 +21,67 @@ class App extends Component {
     this.moveCard = this.moveCard.bind(this);
     this.resetGame = this.resetGame.bind(this);
     this.logout = this.logout.bind(this);
-    this.authenticate = this.authenticate.bind(this);
-    this.authHandler = this.authHandler.bind(this);
-  }
-
-  componentWillMount(){
-
-    console.log('State - ',this.state);
-    this.ref = base.syncState(`${this.props.params.userName}/usedCards`,
-    {
-      context: this,
-      state: 'usedCards'
-    })
-
   }
 
   componentWillUnmount(){
     base.removeBinding(this.ref);
   }
 
-  componentDidMount(){
-        base.onAuth((user) => {
-          console.log('user exists', user);
+  componentWillMount(){
+    const usedCards = this.state.usedCards;
+    console.log('empty usedCards', usedCards);
+    
+    const numOfCards = SampleCards.length;
+    const sample = SampleCards.slice();
+    const availableCards = [];
+    for(let i = 0 ; i<numOfCards; i++){
+      var rand = Math.floor((Math.random() * sample.length - 1) + 1);
+        availableCards[i] = sample[rand];
+        sample.splice(rand,1);
+    }
 
-            if(user){
-                this.authHandler(null, {user});
-            } else {
-                const usedCards = {
-                        spade : [-1],
-                        diamond : [-1],
-                        club : [-1],
-                        heart : [-1]
-                      };
-                this.setState({usedCards});
-            }
-        });
+    this.setState({availableCards});
+
+    
+  }
+
+  componentDidMount(){
+    this.ref = base.syncState(`${this.props.params.userName}/usedCards`,
+    {
+      context: this,
+      state: 'usedCards',
+      then: this.setDeck,
+    });
+
+  }
+
+  setDeck(){
+    const usedCards = this.state.usedCards;
+
+    if(Object.keys(usedCards).length === 0){
+      usedCards['spade'] = [-1];
+      usedCards['heart'] = [-1];
+      usedCards['club'] = [-1];
+      usedCards['diamond'] = [-1];
+    }
 
     const numOfCards = SampleCards.length;
     const sample = SampleCards.slice();
     const availableCards = [];
     for(let i = 0 ; i<numOfCards; i++){
       var rand = Math.floor((Math.random() * sample.length - 1) + 1);
-      availableCards[i] = sample[rand];
-      sample.splice(rand,1);
+
+      if(usedCards[sample[rand].type].indexOf(sample[rand].value) === -1){
+        availableCards.push(sample[rand]);
+      }
+        sample.splice(rand,1);
     }
 
     this.setState({availableCards});
+
   }
 
-  authenticate(provider){
-        console.log(`Trying to login with ${provider}`);
-        console.log(base);
-        base.authWithOAuthPopup(provider, this.authHandler);
-    }
 
-  authHandler(err, authData){
-        console.log(authData);
-        if(err){
-            console.error(err);
-            return;
-        }
-
-        // grab the store info
-        const storeRef =  base.database().ref(this.props.userName);
-
-        // query the firebase once for the store data
-        storeRef.once('value', (snapshot) => {
-            const data = snapshot.val() || {};
-            console.log('snapshot - ', data);
-            this.setState({
-                uid: authData.user.uid,
-            });
-        })
-    }
 
   moveCard(card){
     const usedCards = this.state.usedCards;
@@ -106,6 +89,7 @@ class App extends Component {
     usedCards[card.type].push(card.value);
 
     const len = availableCards.length;
+    console.log({card, availableCards});
     for(let i=0; i< len ; i++){
       if(availableCards[i].type === card.type && availableCards[i].value === card.value){
         availableCards.splice(i,1);

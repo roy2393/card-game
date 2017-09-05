@@ -15,7 +15,7 @@ class Login extends React.Component{
 					<h2> Please enter your user name</h2>
 					<input type="text" required placeholder="User Name" ref={(input)=>{this.userName = input}}/>
 
-					<button type="submit">Visit Store</button>
+					<button type="submit">Go to table</button>
 				</form>
 			)
 	}

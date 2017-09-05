@@ -39,7 +39,7 @@ class Slot extends Component {
   	const {connectDropTarget, isOver } = this.props;
 
     return connectDropTarget(
-      <div className="slot-box">
+      <div className="slot-box" id={this.props.cardType}>
         <h3>{this.props.cardType}</h3>
 
       	<div className="slot">

@@ -27,7 +27,7 @@ export default class SlotContainer extends Component {
 	}
   render() {
     return (
-    	<div>
+    	<div className="slot-container">
     		{Object.keys(this.props.usedCards).map(this.renderSlot)}
     	</div>
     	);
